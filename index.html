@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Pembuat CV Sederhana</title>
+    <!-- Menghubungkan file HTML dengan file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Judul Website -->
+    <header class="app-header">
+        <h1>✨ Pembuat CV Online</h1>
+        <p>Buat CV profesional untuk pelajar dan fresh graduate dalam hitungan menit!</p>
+    </header>
+
+    <!-- Kontainer Utama (Dibagi jadi 2 bagian: Form & Preview) -->
+    <div class="main-container">
+        
+        <!-- BAGIAN KIRI: Form Input Data -->
+        <section class="form-section">
+            <h2>Data Diri Anda</h2>
+            
+            <div class="form-group">
+                <label for="input-nama">Nama Lengkap</label>
+                <input type="text" id="input-nama" placeholder="Contoh: Rian Pratama" oninput="updateCV()">
+            </div>
+
+            <div class="form-group">
+                <label for="input-posisi">Target Posisi / Jurusan</label>
+                <input type="text" id="input-posisi" placeholder="Contoh: Junior Web Developer / Siswa TKJ" oninput="updateCV()">
+            </div>
+
+            <div class="form-group">
+                <label for="input-email">Email</label>
+                <input type="email" id="input-email" placeholder="Contoh: rian@email.com" oninput="updateCV()">
+            </div>
+
+            <div class="form-group">
+                <label for="input-telp">Nomor Telepon / WhatsApp</label>
+                <input type="text" id="input-telp" placeholder="Contoh: 081234567890" oninput="updateCV()">
+            </div>
+
+            <div class="form-group">
+                <label for="input-tentang">Tentang Saya (Profil Singkat)</label>
+                <textarea id="input-tentang" rows="3" placeholder="Ceritakan sedikit tentang keahlian dan motivasi Anda..." oninput="updateCV()"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="input-pendidikan">Riwayat Pendidikan</label>
+                <textarea id="input-pendidikan" rows="3" placeholder="Contoh: SMK Negeri 2 Jombang - TJKT (2023 - 2026)" oninput="updateCV()"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="input-keahlian">Keahlian (Skills)</label>
+                <input type="text" id="input-keahlian" placeholder="Contoh: HTML, CSS, Jaringan MikroTik, Komunikasi" oninput="updateCV()">
+            </div>
+
+            <!-- Tombol Cetak / Download PDF -->
+            <button class="btn-cetak" onclick="cetakCV()">🖨️ Cetak / Simpan ke PDF</button>
+        </section>
+
+        <!-- BAGIAN KANAN: Pratinjau (Preview) CV -->
+        <section class="preview-section">
+            <h2>Pratinjau CV</h2>
+            
+            <!-- Lembar Kertas CV -->
+            <div class="cv-paper" id="cv-output">
+                <div class="cv-header">
+                    <h1 id="preview-nama">Nama Lengkap</h1>
+                    <p id="preview-posisi" class="cv-subtitle">Target Posisi / Jurusan</p>
+                    <div class="cv-kontak">
+                        <span id="preview-email">email@anda.com</span> | 
+                        <span id="preview-telp">08xxxxxxxxxx</span>
+                    </div>
+                </div>
+
+                <div class="cv-body">
+                    <div class="cv-block">
+                        <h3>Profil Singkat</h3>
+                        <p id="preview-tentang">Profil singkat Anda akan muncul di sini secara otomatis saat Anda mengetiknya di sebelah kiri...</p>
+                    </div>
+
+                    <div class="cv-block">
+                        <h3>Pendidikan</h3>
+                        <p id="preview-pendidikan">Riwayat pendidikan Anda akan muncul di sini...</p>
+                    </div>
+
+                    <div class="cv-block">
+                        <h3>Keahlian</h3>
+                        <p id="preview-keahlian">Keahlian Anda akan muncul di sini...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Menghubungkan file HTML dengan file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

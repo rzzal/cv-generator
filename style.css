@@ -1,0 +1,231 @@
+/* ==========================================
+   1. REGULASI DASAR & GAYA UMUM
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* Header Website */
+.main-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.main-header h1 {
+    color: #2c3e50;
+    font-size: 28px;
+}
+
+.main-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* Layout Kontainer Dua Kolom */
+.app-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Agar responsif di layar HP */
+}
+
+/* ==========================================
+   2. DESAIN FORMULIR (KOLOM KIRI)
+   ========================================== */
+.form-section {
+    flex: 1;
+    min-width: 320px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.form-section h3 {
+    font-size: 16px;
+    margin: 20px 0 10px 0;
+    color: #34495e;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+/* Efek fokus saat kolom di-klik */
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: #3498db;
+}
+
+/* Tombol Cetak PDF */
+.btn-print {
+    width: 100%;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.btn-print:hover {
+    background-color: #27ae60;
+}
+
+/* ==========================================
+   3. DESAIN PREVIEW CV / KERTAS (KOLOM KANAN)
+   ========================================== */
+.preview-section {
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tampilan Menyerupai Kertas A4 */
+.cv-paper {
+    background: #ffffff;
+    width: 100%;
+    max-width: 595px; /* Lebar standar skala A4 */
+    min-height: 842px;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.cv-header h1 {
+    font-size: 24px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cv-subtitle {
+    font-size: 15px;
+    color: #3498db;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.cv-contact {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.divider {
+    margin: 15px 0;
+    border: 0;
+    border-top: 2px solid #ecf0f1;
+}
+
+.cv-block {
+    margin-bottom: 20px;
+}
+
+.cv-block h3 {
+    font-size: 14px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid #2c3e50;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+}
+
+.cv-block h4 {
+    font-size: 14px;
+    color: #333;
+}
+
+.cv-block p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* List Keahlian / Skill */
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.skills-list li {
+    background: #ecf0f1;
+    color: #2c3e50;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 3px;
+}
+
+/* ==========================================
+   4. MODUS CETAK / PRINT (PDF)
+   Sembunyikan elemen web selain kertas CV saat dicetak
+   ========================================== */
+@media print {
+    body {
+        background: none;
+        padding: 0;
+    }
+
+    .main-header, 
+    .form-section {
+        display: none !important; /* Sembunyikan header dan form */
+    }
+
+    .app-container {
+        display: block;
+    }
+
+    .preview-section {
+        width: 100%;
+    }
+
+    .cv-paper {
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+    }
+}

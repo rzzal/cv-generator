@@ -3,101 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Pembuat CV Sederhana</title>
-    <!-- Menghubungkan file HTML dengan file CSS -->
+    <title>Pembuat CV Pemula & SMK</title>
+    <!-- Menghubungkan file HTML dengan file CSS eksternal -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header / Judul Website -->
-    <header class="app-header">
-        <h1>✨ Pembuat CV Online</h1>
-        <p>Buat CV profesional untuk pelajar dan fresh graduate dalam hitungan menit!</p>
+    <!-- Header / Judul Utama Website -->
+    <header class="main-header">
+        <h1>Builder CV Pelajar & Fresh Graduate</h1>
+        <p>Isi formulir di bawah ini untuk membuat CV profesional secara praktis.</p>
     </header>
 
-    <!-- Kontainer Utama (Dibagi jadi 2 bagian: Form & Preview) -->
-    <div class="main-container">
-        
-        <!-- BAGIAN KIRI: Form Input Data -->
+    <!-- Kontainer Utama (Dibagi 2 kolom: Formulir dan Preview CV) -->
+    <div class="app-container">
+
+        <!-- ==========================================
+             KOLOM KIRI: FORMULIR INPUT DATA
+        =========================================== -->
         <section class="form-section">
-            <h2>Data Diri Anda</h2>
-            
-            <div class="form-group">
-                <label for="input-nama">Nama Lengkap</label>
-                <input type="text" id="input-nama" placeholder="Contoh: Rian Pratama" oninput="updateCV()">
-            </div>
+            <h2>Form Data Diri</h2>
+            <form id="cvForm">
+                
+                <!-- Data Pribadi -->
+                <div class="form-group">
+                    <label for="fullName">Nama Lengkap</label>
+                    <input type="text" id="fullName" placeholder="Contoh: Budi Santoso" required>
+                </div>
 
-            <div class="form-group">
-                <label for="input-posisi">Target Posisi / Jurusan</label>
-                <input type="text" id="input-posisi" placeholder="Contoh: Junior Web Developer / Siswa TKJ" oninput="updateCV()">
-            </div>
+                <div class="form-group">
+                    <label for="jobTitle">Gelar / Jurusan / Posisi Impian</label>
+                    <input type="text" id="jobTitle" placeholder="Contoh: Siswa TJKT / Fresh Graduate Informatia">
+                </div>
 
-            <div class="form-group">
-                <label for="input-email">Email</label>
-                <input type="email" id="input-email" placeholder="Contoh: rian@email.com" oninput="updateCV()">
-            </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Contoh: budi@gmail.com">
+                </div>
 
-            <div class="form-group">
-                <label for="input-telp">Nomor Telepon / WhatsApp</label>
-                <input type="text" id="input-telp" placeholder="Contoh: 081234567890" oninput="updateCV()">
-            </div>
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon / WhatsApp</label>
+                    <input type="tel" id="phone" placeholder="Contoh: 08123456789">
+                </div>
 
-            <div class="form-group">
-                <label for="input-tentang">Tentang Saya (Profil Singkat)</label>
-                <textarea id="input-tentang" rows="3" placeholder="Ceritakan sedikit tentang keahlian dan motivasi Anda..." oninput="updateCV()"></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="location">Domisili (Kota)</label>
+                    <input type="text" id="location" placeholder="Contoh: Jombang, Jawa Timur">
+                </div>
 
-            <div class="form-group">
-                <label for="input-pendidikan">Riwayat Pendidikan</label>
-                <textarea id="input-pendidikan" rows="3" placeholder="Contoh: SMK Negeri 2 Jombang - TJKT (2023 - 2026)" oninput="updateCV()"></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="about">Ringkasan Profil / Profil Singkat</label>
+                    <textarea id="about" rows="3" placeholder="Tuliskan gambaran singkat tentang diri kamu, minat, dan motivasi kerja..."></textarea>
+                </div>
 
-            <div class="form-group">
-                <label for="input-keahlian">Keahlian (Skills)</label>
-                <input type="text" id="input-keahlian" placeholder="Contoh: HTML, CSS, Jaringan MikroTik, Komunikasi" oninput="updateCV()">
-            </div>
+                <!-- Pendidikan & Keahlian -->
+                <h3>Pendidikan & Skill</h3>
+                <div class="form-group">
+                    <label for="education">Riwayat Pendidikan</label>
+                    <input type="text" id="education" placeholder="Contoh: SMK PGRI 2 Jombang - Teknik Komputer (2023 - 2026)">
+                </div>
 
-            <!-- Tombol Cetak / Download PDF -->
-            <button class="btn-cetak" onclick="cetakCV()">🖨️ Cetak / Simpan ke PDF</button>
+                <div class="form-group">
+                    <label for="skills">Keahlian / Skill (Pisahkan dengan koma)</label>
+                    <input type="text" id="skills" placeholder="Contoh: Troubleshooting, Routing MikroTik, HTML/CSS, Bahasa Inggris">
+                </div>
+
+                <!-- Pengalaman / Praktik Kerja (Prakerin/PKL) -->
+                <h3>Pengalaman / PKL / Organisasi</h3>
+                <div class="form-group">
+                    <label for="experienceTitle">Nama Perusahaan / Organisasi & Peran</label>
+                    <input type="text" id="experienceTitle" placeholder="Contoh: PT. Network Indonesia - Teknisi Jaringan (PKL)">
+                </div>
+
+                <div class="form-group">
+                    <label for="experienceDesc">Deskripsi Tugas & Pencapaian</label>
+                    <textarea id="experienceDesc" rows="3" placeholder="Contoh: Mengonfigurasi router, melakukan maintenance server bulanan, dan membantu trouble shooting LAN."></textarea>
+                </div>
+
+            </form>
+
+            <!-- Tombol Cetak / Simpan ke PDF -->
+            <button id="btnPrint" class="btn-print" onclick="window.print()">Cetak / Simpan ke PDF</button>
         </section>
 
-        <!-- BAGIAN KANAN: Pratinjau (Preview) CV -->
+
+        <!-- ==========================================
+             KOLOM KANAN: PREVIEW CV REAL-TIME
+        =========================================== -->
         <section class="preview-section">
-            <h2>Pratinjau CV</h2>
-            
-            <!-- Lembar Kertas CV -->
-            <div class="cv-paper" id="cv-output">
+            <div class="cv-paper" id="cvPaper">
+                
+                <!-- Header CV -->
                 <div class="cv-header">
-                    <h1 id="preview-nama">Nama Lengkap</h1>
-                    <p id="preview-posisi" class="cv-subtitle">Target Posisi / Jurusan</p>
-                    <div class="cv-kontak">
-                        <span id="preview-email">email@anda.com</span> | 
-                        <span id="preview-telp">08xxxxxxxxxx</span>
+                    <h1 id="previewName">Nama Lengkap Kamu</h1>
+                    <p id="previewTitle" class="cv-subtitle">Jurusan / Keahlian Utama</p>
+                    <div class="cv-contact">
+                        <span id="previewEmail">email@example.com</span> | 
+                        <span id="previewPhone">08123456789</span> | 
+                        <span id="previewLocation">Kota, Provinsi</span>
                     </div>
                 </div>
 
-                <div class="cv-body">
-                    <div class="cv-block">
-                        <h3>Profil Singkat</h3>
-                        <p id="preview-tentang">Profil singkat Anda akan muncul di sini secara otomatis saat Anda mengetiknya di sebelah kiri...</p>
-                    </div>
+                <hr class="divider">
 
-                    <div class="cv-block">
-                        <h3>Pendidikan</h3>
-                        <p id="preview-pendidikan">Riwayat pendidikan Anda akan muncul di sini...</p>
-                    </div>
-
-                    <div class="cv-block">
-                        <h3>Keahlian</h3>
-                        <p id="preview-keahlian">Keahlian Anda akan muncul di sini...</p>
-                    </div>
+                <!-- Ringkasan Profil -->
+                <div class="cv-block">
+                    <h3>Tentang Saya</h3>
+                    <p id="previewAbout">Deskripsi singkat profil kamu akan muncul di sini saat kamu mengetik di formulir sebelah kiri.</p>
                 </div>
+
+                <!-- Pendidikan -->
+                <div class="cv-block">
+                    <h3>Pendidikan</h3>
+                    <p id="previewEducation">Nama Sekolah / Instansi Pendidikan</p>
+                </div>
+
+                <!-- Keahlian / Skill -->
+                <div class="cv-block">
+                    <h3>Keahlian & Kompetensi</h3>
+                    <ul id="previewSkills" class="skills-list">
+                        <li>Skill 1</li>
+                        <li>Skill 2</li>
+                        <li>Skill 3</li>
+                    </ul>
+                </div>
+
+                <!-- Pengalaman -->
+                <div class="cv-block">
+                    <h3>Pengalaman Kerja / PKL / Organisasi</h3>
+                    <h4 id="previewExpTitle">Posisi / Tempat PKL</h4>
+                    <p id="previewExpDesc">Penjelasan mengenai tanggung jawab atau pengalaman yang kamu miliki.</p>
+                </div>
+
             </div>
         </section>
 
     </div>
 
-    <!-- Menghubungkan file HTML dengan file JavaScript -->
+    <!-- Menghubungkan file HTML dengan file JavaScript eksternal -->
     <script src="script.js"></script>
 </body>
 </html>

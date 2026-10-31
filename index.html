@@ -1,146 +1,467 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembuat CV Pemula & SMK</title>
-    <!-- Menghubungkan file HTML dengan file CSS eksternal -->
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVBuilder ID — Generator CV SMK & Fresh Graduate</title>
+<style>
+/* ============ UI APLIKASI ============ */
+:root{--bg:#0f172a;--panel:#1e293b;--card:#243449;--line:#334155;--txt:#e2e8f0;--mut:#94a3b8;--acc:#38bdf8;--gold:#d9b36a}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--txt)}
+.topbar{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 18px;background:#0b1220ee;border-bottom:1px solid var(--line);backdrop-filter:blur(6px);flex-wrap:wrap}
+.brand{font-weight:800;font-size:18px}.brand span{color:var(--acc)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+button,.btn{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);padding:8px 12px;border-radius:8px;font-size:12.5px}
+button.primary{background:var(--acc);border-color:var(--acc);color:#06283a;font-weight:700}
+button:hover,.btn:hover{filter:brightness(1.15)}
+.workspace{display:grid;grid-template-columns:480px 1fr;height:calc(100vh - 55px)}
+@media(max-width:980px){.workspace{grid-template-columns:1fr;height:auto}}
+.form-panel{overflow-y:auto;padding:16px;border-right:1px solid var(--line)}
+.preview-panel{display:flex;flex-direction:column;min-width:0}
+.preview-toolbar{display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.tpl-btn.active{outline:2px solid var(--acc)}
+.preview-scroll{flex:1;overflow:auto;padding:16px;background:#0b1220}
+fieldset{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:6px 12px 14px;margin:0 0 14px}
+legend{padding:0 8px;font-weight:700;font-size:12.5px;color:var(--acc);letter-spacing:1px}
+label{display:block;font-size:11px;color:var(--mut);margin:8px 0 4px}
+input,select,textarea{width:100%;background:#0f1b2d;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit}
+textarea{min-height:84px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.item{border:1px dashed var(--line);border-radius:10px;padding:2px 10px 8px;margin-bottom:10px;background:#16233a}
+.item-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mut);padding:6px 0 2px}
+.del{border-color:#7f1d1d;background:#7f1d1d33;color:#fca5a5;padding:3px 8px;border-radius:6px;font-size:10.5px}
+.add{width:100%;border-style:dashed;color:var(--acc);background:transparent;margin-top:2px}
+.hint{font-size:10.5px;color:var(--mut);margin-top:4px;line-height:1.5}
+.score-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px;margin-bottom:14px}
+.score-bar{height:8px;background:#0f1b2d;border-radius:6px;overflow:hidden;margin:8px 0}
+.score-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),#22c55e);width:0;transition:width .4s}
+.score-list{margin:6px 0 0;padding-left:18px;font-size:11px;color:#fbbf24;line-height:1.6}
+details.tips{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:10px 12px;margin-bottom:14px;font-size:11.5px}
+details.tips summary{cursor:pointer;font-weight:700;color:var(--gold)}
+details.tips ol{margin:8px 0 0;padding-left:18px;line-height:1.7;color:var(--txt)}
+.foto-box{display:flex;gap:10px;align-items:center;margin-top:8px}
+.foto-box img{width:74px;height:74px;border-radius:50%;object-fit:cover;border:2px solid var(--acc)}
+/* ============ KERTAS CV (A4 @96dpi) ============ */
+.page{width:794px;min-height:1123px;background:#fff;color:#222;position:relative;overflow:hidden;box-shadow:0 10px 40px #0009;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page img.pfoto{width:100%;height:100%;object-fit:cover;display:block}
+.page .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;opacity:.55}
+/* --- Template 1: PROFESIONAL --- */
+.t1{display:grid;grid-template-columns:285px 1fr}
+.t1 .side{background:#26282b;color:#e8e8e8;padding:34px 26px}
+.t1 .foto{width:150px;height:150px;border-radius:50%;overflow:hidden;margin:0 auto 8px;background:#3a3d42;border:3px solid var(--gold);font-size:46px;color:#9aa0a8}
+.t1 .side h3{background:var(--gold);color:#26282b;font-size:11px;letter-spacing:2px;padding:6px 18px;border-radius:14px;width:max-content;margin:18px 0 10px}
+.t1 .side .row{font-size:11.5px;line-height:1.55;margin-bottom:9px;word-break:break-word}
+.t1 .side .row b{display:block;color:#fff}
+.t1 .main{padding:44px 40px;background:#f4f4f4}
+.t1 .main h1{font-size:34px;letter-spacing:1px;margin:0;color:#1c1c1c}
+.t1 .sub{font-style:italic;color:#555;font-size:15px;margin:4px 0 0}
+.t1 .sec{margin-top:22px}
+.t1 .sec h2{font-size:14px;letter-spacing:1px;border-bottom:2px solid #26282b;padding-bottom:6px;margin:0 0 10px;color:#1c1c1c}
+.t1 .sec p{font-size:11.5px;line-height:1.7;margin:0;color:#333}
+.t1 .edu{margin-bottom:9px;font-size:11.5px}
+.t1 .edu b{display:block;font-size:12px}
+.t1 .edu span{color:#666}
+.t1 .edu .yr{float:right;color:#444}
+.t1 ul{margin:0 0 10px;padding-left:16px;font-size:11.5px;line-height:1.65;color:#333}
+.t1 .xp h4{margin:0 0 1px;font-size:12.5px}.t1 .xp .meta{font-size:10.5px;color:#666;margin-bottom:5px}
+/* --- Template 2: MODERN --- */
+.t2{display:grid;grid-template-columns:252px 1fr}
+.t2 .side{background:#1f3a54;color:#eaf0f6;padding:30px 22px}
+.t2 .foto{width:122px;height:122px;border-radius:50%;overflow:hidden;margin:0 auto 12px;border:3px solid #fff;background:#2c4a68;font-size:40px;color:#bcd0e0}
+.t2 .side h1{font-size:22px;color:#fff;text-align:center;margin:0;line-height:1.2}
+.t2 .side .sub{text-align:center;font-size:10.5px;color:#bcd0e0;margin:5px 0 6px;letter-spacing:1.5px;text-transform:uppercase}
+.t2 .side h3{font-size:11.5px;letter-spacing:1.5px;color:#fff;border-bottom:1px solid #466382;padding-bottom:5px;margin:18px 0 9px}
+.t2 .side .row{font-size:10.5px;line-height:1.5;margin-bottom:6px;word-break:break-word}
+.t2 .skn{font-size:10.5px;margin-bottom:2px}
+.t2 .bar{height:5px;background:#3d5a78;border-radius:3px;margin:2px 0 9px}
+.t2 .bar i{display:block;height:100%;background:#8fc1e3;border-radius:3px}
+.t2 .main{padding:34px 34px;background:#f7f9fb}
+.t2 .main h2{background:#1f3a54;color:#fff;font-size:12.5px;letter-spacing:1.5px;padding:7px 26px 7px 14px;margin:0 0 12px;width:max-content}
+.t2 .main .sec{margin-bottom:20px}
+.t2 .main p{font-size:11.5px;line-height:1.7;margin:0;color:#333}
+.t2 .xp{border-left:2px solid #1f3a54;margin:0 0 14px 6px;padding-left:18px;position:relative}
+.t2 .xp::before{content:'';position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:#1f3a54}
+.t2 .xp h4{margin:0;font-size:12.5px;color:#16324a}
+.t2 .xp .meta{font-size:10.5px;color:#5b7186;margin:2px 0 6px}
+.t2 .xp ul{margin:0;padding-left:15px;font-size:11px;line-height:1.6;color:#333}
+/* --- Template 3: MINIMALIS (ATS) --- */
+.t3{padding:46px 54px}
+.t3 .head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;border-bottom:2px solid #222;padding-bottom:18px}
+.t3 h1{font-size:30px;margin:0;letter-spacing:.5px}
+.t3 .role{color:#666;font-size:13px;margin:3px 0 8px}
+.t3 .contact{font-size:11px;color:#444;line-height:1.7}
+.t3 .foto{width:110px;height:140px;border-radius:6px;overflow:hidden;background:#eee;flex:none;font-size:36px;color:#999}
+.t3 h2{display:flex;align-items:center;gap:8px;font-size:13.5px;letter-spacing:1.5px;margin:24px 0 10px;text-transform:uppercase;border-bottom:1px solid #bbb;padding-bottom:6px}
+.t3 h2 svg{width:15px;height:15px;fill:#222;flex:none}
+.t3 p{font-size:11.5px;line-height:1.7;margin:0}
+.t3 .kv{display:grid;grid-template-columns:150px 14px 1fr;font-size:11.5px;margin-bottom:5px}
+.t3 .edu,.t3 .xpr{margin-bottom:10px;font-size:11.5px}
+.t3 .edu b,.t3 .xpr b{font-size:12px}
+.t3 .yr{color:#666;float:right}
+.t3 ul{margin:4px 0 0;padding-left:16px;font-size:11.5px;line-height:1.6}
+.t3 .sk2{display:grid;grid-template-columns:1fr 1fr;gap:4px 26px;font-size:11.5px}
+/* --- Template 4: KREATIF --- */
+.t4{display:grid;grid-template-columns:238px 1fr}
+.t4 .side{background:#404040;color:#e6e6e6;padding:30px 20px}
+.t4 .foto{width:122px;height:122px;border-radius:50%;overflow:hidden;margin:0 auto 10px;border:4px solid #cddc39;background:#555;font-size:40px;color:#bbb}
+.t4 .side h3{color:#cddc39;font-size:11.5px;letter-spacing:1.5px;border-bottom:1px solid #6b6b6b;padding-bottom:5px;margin:18px 0 9px;text-transform:uppercase}
+.t4 .side .row{font-size:10.5px;line-height:1.55;margin-bottom:7px;word-break:break-word}
+.t4 .side .row b{color:#fff}
+.t4 .sk{font-size:10.5px;margin-bottom:9px}
+.t4 .track{height:3px;background:#6a6a6a;position:relative;margin-top:5px}
+.t4 .track i{position:absolute;top:-3.5px;width:10px;height:10px;background:#cddc39;border-radius:50%}
+.t4 .main{padding:40px 34px}
+.t4 h1{color:#b6c919;font-size:34px;margin:0}
+.t4 .sub{color:#777;font-size:13px;margin:3px 0 0}
+.t4 .sec h2{font-size:13.5px;color:#333;margin:20px 0 9px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #ddd;padding-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.t4 .sec h2::before{content:'';width:10px;height:10px;background:#cddc39;border-radius:50%;flex:none}
+.t4 p{font-size:11.5px;line-height:1.7;margin:0}
+.t4 .edu{display:grid;grid-template-columns:52px 1fr auto;gap:10px;font-size:11.5px;margin-bottom:7px}
+.t4 .xpr{margin-bottom:12px}.t4 .xpr h4{margin:0;font-size:12.5px}.t4 .xpr .meta{font-size:10.5px;color:#8a8a1f;font-weight:700;margin:1px 0 5px}
+.t4 ul{margin:0;padding-left:16px;font-size:11px;line-height:1.6}
+/* ============ PRINT ============ */
+@media print{
+  body{background:#fff}
+  .no-print{display:none!important}
+  .workspace{display:block;height:auto}
+  .form-panel{display:none!important}
+  .preview-panel{display:block}
+  .preview-scroll{overflow:visible;padding:0;background:#fff}
+  .page-scale{width:auto!important;height:auto!important}
+  #page{transform:none!important;box-shadow:none;min-height:0;width:100%}
+  @page{size:A4;margin:0}
+}
+</style>
 </head>
 <body>
 
-    <!-- Header / Judul Utama Website -->
-    <header class="main-header">
-        <h1>Builder CV Pelajar & Fresh Graduate</h1>
-        <p>Isi formulir di bawah ini untuk membuat CV profesional secara praktis.</p>
-    </header>
+<header class="topbar no-print">
+  <div class="brand">⚡ CVBuilder<span>ID</span> <small style="color:var(--mut);font-weight:400">— SMK & Fresh Graduate</small></div>
+  <div class="top-actions">
+    <button id="btnContoh">✨ Muat Contoh</button>
+    <button id="btnExport">⬆ Export JSON</button>
+    <label class="btn">⬇ Import JSON<input type="file" id="inpImport" accept=".json" hidden></label>
+    <button id="btnReset"> Reset</button>
+    <button id="btnPrint" class="primary">🖨 Unduh PDF</button>
+  </div>
+</header>
 
-    <!-- Kontainer Utama (Dibagi 2 kolom: Formulir dan Preview CV) -->
-    <div class="app-container">
-
-        <!-- ==========================================
-             KOLOM KIRI: FORMULIR INPUT DATA
-        =========================================== -->
-        <section class="form-section">
-            <h2>Form Data Diri</h2>
-            <form id="cvForm">
-                
-                <!-- Data Pribadi -->
-                <div class="form-group">
-                    <label for="fullName">Nama Lengkap</label>
-                    <input type="text" id="fullName" placeholder="Contoh: RyzZephyr" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="jobTitle">Gelar / Jurusan / Posisi Impian</label>
-                    <input type="text" id="jobTitle" placeholder="Contoh: Siswa TKJ / Fresh Graduate Informatia">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Contoh: budi@gmail.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Nomor Telepon / WhatsApp</label>
-                    <input type="tel" id="phone" placeholder="Contoh: 08123456789">
-                </div>
-
-                <div class="form-group">
-                    <label for="location">Domisili (Kota)</label>
-                    <input type="text" id="location" placeholder="Contoh: Jombang, Jawa Timur">
-                </div>
-
-                <div class="form-group">
-                    <label for="about">Ringkasan Profil / Profil Singkat</label>
-                    <textarea id="about" rows="3" placeholder="Tuliskan gambaran singkat tentang diri kamu, minat, dan motivasi kerja..."></textarea>
-                </div>
-
-                <!-- Pendidikan & Keahlian -->
-                <h3>Pendidikan & Skill</h3>
-                <div class="form-group">
-                    <label for="education">Riwayat Pendidikan</label>
-                    <input type="text" id="education" placeholder="Contoh: SMK PGRI 2 Jombang - Teknik Komputer (2023 - 2026)">
-                </div>
-
-                <div class="form-group">
-                    <label for="skills">Keahlian / Skill (Pisahkan dengan koma)</label>
-                    <input type="text" id="skills" placeholder="Contoh: Troubleshooting, Routing MikroTik, HTML/CSS, Bahasa Inggris">
-                </div>
-
-                <!-- Pengalaman / Praktik Kerja (Prakerin/PKL) -->
-                <h3>Pengalaman / PKL / Organisasi</h3>
-                <div class="form-group">
-                    <label for="experienceTitle">Nama Perusahaan / Organisasi & Peran</label>
-                    <input type="text" id="experienceTitle" placeholder="Contoh: PT. Network Indonesia - Teknisi Jaringan (PKL)">
-                </div>
-
-                <div class="form-group">
-                    <label for="experienceDesc">Deskripsi Tugas & Pencapaian</label>
-                    <textarea id="experienceDesc" rows="3" placeholder="Contoh: Mengonfigurasi router, melakukan maintenance server bulanan, dan membantu trouble shooting LAN."></textarea>
-                </div>
-
-            </form>
-
-            <!-- Tombol Cetak / Simpan ke PDF -->
-            <button id="btnPrint" class="btn-print" onclick="window.print()">Cetak / Simpan ke PDF</button>
-        </section>
-
-
-        <!-- ==========================================
-             KOLOM KANAN: PREVIEW CV REAL-TIME
-        =========================================== -->
-        <section class="preview-section">
-            <div class="cv-paper" id="cvPaper">
-                
-                <!-- Header CV -->
-                <div class="cv-header">
-                    <h1 id="previewName">Nama Lengkap Kamu</h1>
-                    <p id="previewTitle" class="cv-subtitle">Jurusan / Keahlian Utama</p>
-                    <div class="cv-contact">
-                        <span id="previewEmail">email@example.com</span> | 
-                        <span id="previewPhone">08123456789</span> | 
-                        <span id="previewLocation">Kota, Provinsi</span>
-                    </div>
-                </div>
-
-                <hr class="divider">
-
-                <!-- Ringkasan Profil -->
-                <div class="cv-block">
-                    <h3>Tentang Saya</h3>
-                    <p id="previewAbout">Deskripsi singkat profil kamu akan muncul di sini saat kamu mengetik di formulir sebelah kiri.</p>
-                </div>
-
-                <!-- Pendidikan -->
-                <div class="cv-block">
-                    <h3>Pendidikan</h3>
-                    <p id="previewEducation">Nama Sekolah / Instansi Pendidikan</p>
-                </div>
-
-                <!-- Keahlian / Skill -->
-                <div class="cv-block">
-                    <h3>Keahlian & Kompetensi</h3>
-                    <ul id="previewSkills" class="skills-list">
-                        <li>Skill 1</li>
-                        <li>Skill 2</li>
-                        <li>Skill 3</li>
-                    </ul>
-                </div>
-
-                <!-- Pengalaman -->
-                <div class="cv-block">
-                    <h3>Pengalaman Kerja / PKL / Organisasi</h3>
-                    <h4 id="previewExpTitle">Posisi / Tempat PKL</h4>
-                    <p id="previewExpDesc">Penjelasan mengenai tanggung jawab atau pengalaman yang kamu miliki.</p>
-                </div>
-
-            </div>
-        </section>
-
+<main class="workspace">
+  <!-- ============ PANEL FORM ============ -->
+  <section class="form-panel no-print">
+    <div class="score-card">
+      <b style="font-size:12.5px">📊 Skor Kelengkapan CV</b>
+      <div class="score-bar"><i id="scoreBar"></i></div>
+      <div id="scoreTxt" style="font-size:11.5px"></div>
+      <ul class="score-list" id="scoreMiss"></ul>
     </div>
+    <details class="tips">
+      <summary>💡 Tips Lolos Screening HRD & ATS (wajib baca)</summary>
+      <ol>
+        <li>Gunakan email profesional: <i>nama.belakang@email.com</i>, bukan nickname alay.</li>
+        <li>Ringkasan profil 3–4 kalimat: identitas + jurusan/pendidikan + keahlian utama + tujuan karier.</li>
+        <li>Pengalaman pakai <b>kata kerja aktif & angka</b>: "Menginstal 30+ titik jaringan LAN", "Mendesain 20 konten/media sekolah".</li>
+        <li>Anak SMK: wajib tonjolkan <b>PKL/magang, proyek sekolah, sertifikat UKK/kompetensi (BNSP)</b>, dan organisasi.</li>
+        <li>Sesuaikan kata kunci keahlian dengan lowongan kerja agar lolos filter ATS.</li>
+        <li>Fresh graduate cukup <b>1 halaman</b>; gunakan template <b>Minimalis</b> untuk perusahaan yang memakai sistem ATS.</li>
+        <li>Foto profesional hanya jika diminta / budaya perusahaan (BUMN & manufaktur umum pakai foto; startup/multinasional sering tidak).</li>
+        <li>Simpan PDF dengan nama: <i>CV_NamaLengkap_Posisi.pdf</i>.</li>
+      </ol>
+    </details>
 
-    <!-- Menghubungkan file HTML dengan file JavaScript eksternal -->
-    <script src="script.js"></script>
+    <form id="form" autocomplete="off">
+      <fieldset><legend>👤 DATA PRIBADI</legend>
+        <div class="foto-box">
+          <img id="fotoPrev" src="" alt="" style="display:none">
+          <div style="flex:1">
+            <label class="btn" style="display:inline-block;margin:0">📷 Upload Foto<input type="file" id="inpFoto" accept="image/*" hidden></label>
+            <button type="button" id="btnHapusFoto" class="del" style="margin-left:6px">Hapus Foto</button>
+            <div class="hint">Foto formal rasio 3:4 / persegi. Otomatis dikompresi agar hemat penyimpanan.</div>
+          </div>
+        </div>
+        <label>Nama Lengkap *<input data-p="nama" placeholder="cth: Rizky Pratama"></label>
+        <label>Judul / Target Posisi *<input data-p="judul" placeholder="cth: Fresh Graduate SMK Teknik Komputer & Jaringan"></label>
+        <div class="grid2">
+          <label>Tempat Lahir<input data-p="tempat" placeholder="cth: Bandung"></label>
+          <label>Tanggal Lahir<input type="date" data-p="tanggal"></label>
+          <label>Jenis Kelamin<select data-p="jk"><option value="">— pilih —</option><option>Laki-laki</option><option>Perempuan</option></select></label>
+          <label>Status<select data-p="status"><option value="">— pilih —</option><option>Belum menikah</option><option>Menikah</option></select></label>
+          <label>Agama<input data-p="agama" placeholder="cth: Islam"></label>
+          <label>Kewarganegaraan<input data-p="wni" placeholder="Indonesia"></label>
+          <label>No. Telepon / WhatsApp *<input data-p="telepon" placeholder="cth: +62 812-3456-7890"></label>
+          <label>Email *<input data-p="email" placeholder="cth: nama@email.com"></label>
+        </div>
+        <label>Alamat Lengkap<textarea data-p="alamat" style="min-height:56px" placeholder="Jl. Contoh No. 12, Kec., Kota, Kode Pos"></textarea></label>
+      </fieldset>
+
+      <fieldset><legend>🔗 SOSIAL MEDIA (2 slot kosong)</legend>
+        <div id="list-sosmed"></div>
+        <button type="button" class="add" data-add="sosmed">+ Tambah Sosial Media</button>
+        <div class="hint">Isi minimal 1 (LinkedIn/portofolio sangat disarankan). Contoh: Instagram → @username, LinkedIn → linkedin.com/in/username.</div>
+      </fieldset>
+
+      <fieldset><legend>📝 PROFIL / TENTANG SAYA</legend>
+        <textarea data-p="tentang" placeholder="cth: Lulusan baru SMK Negeri 1 Bandung jurusan Teknik Komputer & Jaringan dengan pengalaman PKL di PT Telkom Indonesia. Menguasai instalasi jaringan LAN/WAN serta konfigurasi Mikrotik. Terbiasa bekerja dalam tim, disiplin, dan siap berkontribusi sebagai teknisi jaringan junior."></textarea>
+        <div class="hint"><span id="cntTentang">0</span> karakter — ideal 200–450 karakter (3–4 kalimat).</div>
+      </fieldset>
+
+      <fieldset><legend>🎓 RIWAYAT PENDIDIKAN</legend>
+        <div id="list-pendidikan"></div>
+        <button type="button" class="add" data-add="pendidikan">+ Tambah Pendidikan</button>
+      </fieldset>
+
+      <fieldset><legend>💼 PENGALAMAN KERJA / PKL / MAGANG</fieldset>
+        <div id="list-pengalaman"></div>
+        <button type="button" class="add" data-add="pengalaman">+ Tambah Pengalaman</button>
+        <div class="hint">Deskripsi satu baris = satu poin bullet. Mulai dengan kata kerja: Mengelola, Membuat, Memimpin, Merancang…</div>
+      </fieldset>
+
+      <fieldset><legend>🏛 PENGALAMAN ORGANISASI</legend>
+        <div id="list-organisasi"></div>
+        <button type="button" class="add" data-add="organisasi">+ Tambah Organisasi</button>
+      </fieldset>
+
+      <fieldset><legend>🛠 KEAHLIAN (5 slot kosong)</legend>
+        <div id="list-keahlian"></div>
+        <button type="button" class="add" data-add="keahlian">+ Tambah Keahlian</button>
+      </fieldset>
+
+      <fieldset><legend>🏆 SERTIFIKAT & PENGHARGAAN</legend>
+        <div id="list-sertifikat"></div>
+        <button type="button" class="add" data-add="sertifikat">+ Tambah Sertifikat</button>
+      </fieldset>
+    </form>
+  </section>
+
+  <!-- ============ PANEL PREVIEW ============ -->
+  <section class="preview-panel">
+    <div class="preview-toolbar no-print">
+      <span style="font-size:11.5px;color:var(--mut)">Template:</span>
+      <button class="tpl-btn" data-tpl="t1">Profesional</button>
+      <button class="tpl-btn" data-tpl="t2">Modern</button>
+      <button class="tpl-btn" data-tpl="t3">Minimalis (ATS)</button>
+      <button class="tpl-btn" data-tpl="t4">Kreatif</button>
+      <span style="font-size:10.5px;color:var(--mut);margin-left:auto">Pratinjau A4 • Unduh PDF: pilih printer "Save as PDF", margin "None", centang "Background graphics"</span>
+    </div>
+    <div class="preview-scroll" id="prevScroll">
+      <div class="page-scale" id="pageScale"><div id="page" class="page t1"></div></div>
+    </div>
+  </section>
+</main>
+
+<datalist id="sosmedOpts">
+  <option value="Instagram"><option value="LinkedIn"><option value="TikTok"><option value="YouTube">
+  <option value="X / Twitter"><option value="Facebook"><option value="GitHub"><option value="Behance">
+  <option value="Dribbble"><option value="Website / Portofolio">
+</datalist>
+
+<script>
+/* ================= STATE & UTIL ================= */
+const LS='cvbuilder-id-v1';
+const LVL=['','Pemula','Dasar','Menengah','Mahir','Ahli'];
+const $=s=>document.querySelector(s);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const filled=a=>(a||[]).filter(x=>Object.values(x).some(v=>(v+'').trim()));
+const has=a=>filled(a).length>0;
+const tglID=v=>{if(!v)return'';const d=new Date(v+'T00:00:00');return isNaN(d)?'':d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});};
+const bullets=t=>(t||'').split('\n').map(s=>s.trim()).filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('');
+const sel=(o,v)=>o.map(x=>`<option${x===v?' selected':''}>${esc(x)}</option>`).join('');
+const lvlSel=v=>[0,1,2,3,4,5].map(n=>`<option value="${n}"${n==v?' selected':''}>${n?n+' – '+LVL[n]:'Pilih tingkat'}</option>`).join('');
+const ICON={user:'<svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5Z"/></svg>',
+cap:'<svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8Z"/></svg>',
+case:'<svg viewBox="0 0 24 24"><path d="M10 2h4a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Zm0 4h4V4h-4Z"/></svg>',
+star:'<svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6.1 3.6 1.4-6.8L2.2 9.1l6.9-.8Z"/></svg>'};
+
+const E={
+ sosmed:()=>({platform:'',nilai:''}),
+ pendidikan:()=>({jenjang:'',sekolah:'',jurusan:'',mulai:'',selesai:'',nilai:''}),
+ pengalaman:()=>({posisi:'',perusahaan:'',periode:'',deskripsi:''}),
+ organisasi:()=>({posisi:'',nama:'',periode:'',deskripsi:''}),
+ keahlian:()=>({nama:'',level:0}),
+ sertifikat:()=>({nama:'',penerbit:'',tahun:''})
+};
+function defaultState(){return{template:'t1',
+ personal:{foto:'',nama:'',judul:'',tempat:'',tanggal:'',jk:'',status:'',agama:'',wni:'Indonesia',alamat:'',telepon:'',email:'',tentang:''},
+ sosmed:[E.sosmed(),E.sosmed()],pendidikan:[E.pendidikan()],pengalaman:[E.pengalaman()],organisasi:[],
+ keahlian:[E.keahlian(),E.keahlian(),E.keahlian(),E.keahlian(),E.keahlian()],sertifikat:[]};}
+let state=defaultState();
+try{const s=localStorage.getItem(LS);if(s)state=Object.assign(defaultState(),JSON.parse(s));}catch(e){}
+
+/* ================= RENDER EDITOR LIST ================= */
+const LABEL={sosmed:'Sosial Media',pendidikan:'Pendidikan',pengalaman:'Pengalaman',organisasi:'Organisasi',keahlian:'Keahlian',sertifikat:'Sertifikat'};
+function itemHTML(k,i,o){
+ const f=(fld,ph,extra='')=>`<input data-k="${k}" data-i="${i}" data-f="${fld}" value="${esc(o[fld])}" placeholder="${ph}" ${extra}>`;
+ const head=`<div class="item-head"><span>${LABEL[k]} #${i+1}</span><button type="button" class="del" data-del="${k}:${i}">Hapus</button></div>`;
+ if(k==='sosmed')return`<div class="item">${head}<div class="grid2"><label>Platform<input list="sosmedOpts" data-k="${k}" data-i="${i}" data-f="platform" value="${esc(o.platform)}" placeholder="cth: Instagram"></label><label>Username / URL${f('nilai','@username atau url')}</label></div></div>`;
+ if(k==='pendidikan')return`<div class="item">${head}<div class="grid2">
+   <label>Jenjang<select data-k="${k}" data-i="${i}" data-f="jenjang">${sel(['','SD','SMP','SMK','SMA','MA','D1','D3','S1','S2'],o.jenjang)}</select></label>
+   <label>Tahun Mulai – Selesai<div class="grid2">${f('mulai','2023')}${f('selesai','2026')}</div></label></div>
+   <label>Nama Sekolah / Perguruan Tinggi${f('sekolah','cth: SMK Negeri 1 Bandung')}</label>
+   <div class="grid2"><label>Jurusan / Kejuruan${f('jurusan','cth: Teknik Komputer & Jaringan')}</label><label>Nilai Akhir (opsional)${f('nilai','cth: 88 / Rata-rata rapor')}</label></div></div>`;
+ if(k==='pengalaman')return`<div class="item">${head}<div class="grid2">${
+   `<label>Posisi / Jabatan${f('posisi','cth: Teknisi Jaringan (PKL)')}</label><label>Perusahaan / Instansi${f('perusahaan','cth: PT Telkom Indonesia')}</label>`}
+   <label>Periode${f('periode','cth: 2025 – 2026')}</label></div>
+   <label>Deskripsi (per baris = 1 poin)<textarea data-k="${k}" data-i="${i}" data-f="deskripsi">${esc(o.deskripsi)}</textarea></div>`;
+ if(k==='organisasi')return`<div class="item">${head}<div class="grid2">${
+   `<label>Posisi${f('posisi','cth: Ketua OSIS')}</label><label>Nama Organisasi${f('nama','cth: OSIS SMK N 1 Bandung')}</label>`}
+   <label>Periode${f('periode','cth: 2024 – 2025')}</label></div>
+   <label>Deskripsi singkat (opsional)<textarea data-k="${k}" data-i="${i}" data-f="deskripsi" style="min-height:52px">${esc(o.deskripsi)}</textarea></div>`;
+ if(k==='keahlian')return`<div class="item">${head}<div class="grid2"><label>Nama Keahlian${f('nama','cth: Mikrotik RouterOS')}</label>
+   <label>Tingkat<select data-k="${k}" data-i="${i}" data-f="level">${lvlSel(o.level)}</select></label></div></div>`;
+ return`<div class="item">${head}<label>Nama Sertifikat / Penghargaan${f('nama','cth: Sertifikasi BNSP Junior Network Administrator')}</label>
+   <div class="grid2"><label>Penerbit${f('penerbit','cth: BNSP')}</label><label>Tahun${f('tahun','cth: 2026')}</label></div></div>`;
+}
+function renderList(k){$('#list-'+k).innerHTML=state[k].map((o,i)=>itemHTML(k,i,o)).join('');}
+function renderAllLists(){Object.keys(E).forEach(renderList);}
+function syncForm(){
+ document.querySelectorAll('[data-p]').forEach(el=>el.value=state.personal[el.dataset.p]||'');
+ $('#cntTentang').textContent=(state.personal.tentang||'').length;
+ const fp=$('#fotoPrev');
+ if(state.personal.foto){fp.src=state.personal.foto;fp.style.display='block';}else fp.style.display='none';
+ renderAllLists();
+}
+
+/* ================= TEMPLATE CV ================= */
+const fotoBox=(cls,phCls)=>state.personal.foto?`<div class="${cls}"><img class="pfoto" src="${state.personal.foto}" alt="Foto"></div>`
+ :`<div class="${cls}"><div class="ph ${phCls||''}">${esc((state.personal.nama||'CV').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase())}</div></div>`;
+const P=()=>state.personal;
+function eduLine(o,yrCls){return`<div class="edu"><span class="yr ${yrCls||''}">${esc([o.mulai,o.selesai].filter(Boolean).join(' – '))}</span><b>${esc(o.sekolah)}</b>${o.jurusan?`<span>${esc(o.jenjang?o.jenjang+' • ':'')}${esc(o.jurusan)}</span>`:(o.jenjang?`<span>${esc(o.jenjang)}</span>`:'')}${o.nilai?`<span> • Nilai: ${esc(o.nilai)}</span>`:''}</div>`;}
+function xpBlock(o,cls){return`<div class="${cls}"><h4>${esc(o.posisi)}</h4><div class="meta">${esc(o.perusahaan)}${o.perusahaan&&o.periode?' | ':''}${esc(o.periode)}</div>${o.deskripsi?`<ul>${bullets(o.deskripsi)}</ul>`:''}</div>`;}
+
+const TPL={
+t1:s=>{const p=P();return`<div class="side">
+ ${fotoBox('foto')}
+ <h3>DATA DIRI</h3>
+ ${p.tempat||p.tanggal?`<div class="row"><b>Tempat / Tanggal Lahir</b>${esc(p.tempat)}${p.tempat&&p.tanggal?', ':''}${tglID(p.tanggal)}</div>`:''}
+ ${p.jk?`<div class="row"><b>Jenis Kelamin</b>${esc(p.jk)}</div>`:''}
+ ${p.status?`<div class="row"><b>Status</b>${esc(p.status)}</div>`:''}
+ ${p.wni?`<div class="row"><b>Kewarganegaraan</b>${esc(p.wni)}</div>`:''}
+ ${p.agama?`<div class="row"><b>Agama</b>${esc(p.agama)}</div>`:''}
+ <h3>KONTAK</h3>
+ ${p.telepon?`<div class="row">📞 ${esc(p.telepon)}</div>`:''}${p.email?`<div class="row">✉️ ${esc(p.email)}</div>`:''}${p.alamat?`<div class="row">📍 ${esc(p.alamat)}</div>`:''}
+ ${has(s.sosmed)?`<h3>SOSIAL MEDIA</h3>`+filled(s.sosmed).map(x=>`<div class="row">${esc(x.platform)}: ${esc(x.nilai)}</div>`).join(''):''}
+</div><div class="main">
+ <h1>${esc(p.nama)||'NAMA LENGKAP'}</h1>${p.judul?`<div class="sub">${esc(p.judul)}</div>`:''}
+ ${p.tentang?`<div class="sec"><h2>TENTANG SAYA</h2><p>${esc(p.tentang)}</p></div>`:''}
+ ${has(s.pendidikan)?`<div class="sec"><h2>PENDIDIKAN</h2>${filled(s.pendidikan).map(o=>eduLine(o)).join('')}</div>`:''}
+ ${has(s.pengalaman)?`<div class="sec"><h2>PENGALAMAN KERJA / PKL</h2>${filled(s.pengalaman).map(o=>xpBlock(o,'xp')).join('')}</div>`:''}
+ ${has(s.organisasi)?`<div class="sec"><h2>PENGALAMAN ORGANISASI</h2>${filled(s.organisasi).map(o=>xpBlock(o,'xp')).join('')}</div>`:''}
+ ${has(s.keahlian)?`<div class="sec"><h2>KEMAMPUAN</h2><ul>${filled(s.keahlian).map(x=>`<li>${esc(x.nama)}${x.level?` — ${LVL[x.level]}`:''}</li>`).join('')}</ul></div>`:''}
+ ${has(s.sertifikat)?`<div class="sec"><h2>SERTIFIKAT & PENGHARGAAN</h2><ul>${filled(s.sertifikat).map(x=>`<li>${esc(x.nama)}${x.penerbit?` — ${esc(x.penerbit)}`:''}${x.tahun?` (${esc(x.tahun)})`:''}</li>`).join('')}</ul></div>`:''}
+</div>`;},
+
+t2:s=>{const p=P();return`<div class="side">
+ ${fotoBox('foto')}<h1>${esc(p.nama)||'NAMA'}</h1>${p.judul?`<div class="sub">${esc(p.judul)}</div>`:''}
+ <h3>KONTAK</h3>
+ ${p.telepon?`<div class="row">📞 ${esc(p.telepon)}</div>`:''}${p.email?`<div class="row">✉️ ${esc(p.email)}</div>`:''}${p.alamat?`<div class="row">📍 ${esc(p.alamat)}</div>`:''}${p.tempat||p.tanggal?`<div class="row">🎂 ${esc(p.tempat)}, ${tglID(p.tanggal)}</div>`:''}
+ ${has(s.sosmed)?`<h3>SOSIAL MEDIA</h3>`+filled(s.sosmed).map(x=>`<div class="row">${esc(x.platform)}: ${esc(x.nilai)}</div>`).join(''):''}
+ ${has(s.pendidikan)?`<h3>PENDIDIKAN</h3>`+filled(s.pendidikan).map(o=>`<div class="row"><b>${esc(o.sekolah)}</b><br>${esc(o.jenjang)}${o.jurusan?' • '+esc(o.jurusan):''}<br>${esc([o.mulai,o.selesai].filter(Boolean).join(' – '))}</div>`).join(''):''}
+ ${has(s.keahlian)?`<h3>SKILLS</h3>`+filled(s.keahlian).map(x=>`<div class="skn">${esc(x.nama)}</div><div class="bar"><i style="width:${(x.level||3)/5*100}%"></i></div>`).join(''):''}
+</div><div class="main">
+ ${p.tentang?`<div class="sec"><h2>TENTANG SAYA</h2><p>${esc(p.tentang)}</p></div>`:''}
+ ${has(s.pengalaman)?`<div class="sec"><h2>PENGALAMAN KERJA / PKL</h2>${filled(s.pengalaman).map(o=>xpBlock(o,'xp')).join('')}</div>`:''}
+ ${has(s.organisasi)?`<div class="sec"><h2>PENGALAMAN ORGANISASI</h2>${filled(s.organisasi).map(o=>xpBlock(o,'xp')).join('')}</div>`:''}
+ ${has(s.sertifikat)?`<div class="sec"><h2>SERTIFIKAT & PENGHARGAAN</h2><ul style="margin:0;padding-left:16px;font-size:11px;line-height:1.7">${filled(s.sertifikat).map(x=>`<li>${esc(x.nama)}${x.penerbit?' — '+esc(x.penerbit):''}${x.tahun?' ('+esc(x.tahun)+')':''}</li>`).join('')}</ul></div>`:''}
+</div>`;},
+
+t3:s=>{const p=P();const c=[p.telepon,p.email,p.alamat].filter(Boolean).map(esc).join(' • ');return`
+ <div class="head"><div><h1>${esc(p.nama)||'NAMA LENGKAP'}</h1>${p.judul?`<div class="role">${esc(p.judul)}</div>`:''}<div class="contact">${c}${has(s.sosmed)?'<br>'+filled(s.sosmed).map(x=>esc(x.platform)+': '+esc(x.nilai)).join(' • '):''}</div></div>${fotoBox('foto')}</div>
+ <h2>${ICON.user} DATA PRIBADI</h2>
+ ${[['Tempat, Tanggal Lahir',[p.tempat,tglID(p.tanggal)].filter(Boolean).join(', ')],['Jenis Kelamin',p.jk],['Status',p.status],['Agama',p.agama],['Kewarganegaraan',p.wni]].filter(r=>r[1]).map(r=>`<div class="kv"><span>${r[0]}</span><span>:</span><span>${esc(r[1])}</span></div>`).join('')}
+ ${p.tentang?`<h2>${ICON.user} PROFIL SINGKAT</h2><p>${esc(p.tentang)}</p>`:''}
+ ${has(s.pendidikan)?`<h2>${ICON.cap} RIWAYAT PENDIDIKAN</h2>`+filled(s.pendidikan).map(o=>eduLine(o)).join(''):''}
+ ${has(s.pengalaman)?`<h2>${ICON.case} PENGALAMAN KERJA / PKL</h2>`+filled(s.pengalaman).map(o=>xpBlock(o,'xpr')).join(''):''}
+ ${has(s.organisasi)?`<h2>${ICON.case} PENGALAMAN ORGANISASI</h2>`+filled(s.organisasi).map(o=>xpBlock(o,'xpr')).join(''):''}
+ ${has(s.keahlian)?`<h2>${ICON.star} KEMAMPUAN</h2><div class="sk2">${filled(s.keahlian).map(x=>`<div>• ${esc(x.nama)}${x.level?` (${LVL[x.level]})`:''}</div>`).join('')}</div>`:''}
+ ${has(s.sertifikat)?`<h2>${ICON.star} SERTIFIKAT & PENGHARGAAN</h2>`+filled(s.sertifikat).map(x=>`<div class="edu"><span class="yr">${esc(x.tahun)}</span><b>${esc(x.nama)}</b>${x.penerbit?`<span style="color:#666">${esc(x.penerbit)}</span>`:''}</div>`).join(''):''}`;},
+
+t4:s=>{const p=P();return`<div class="side">
+ ${fotoBox('foto')}
+ <h3>Data Pribadi</h3>
+ ${p.tempat||p.tanggal?`<div class="row"><b>TTL:</b> ${esc(p.tempat)}, ${tglID(p.tanggal)}</div>`:''}
+ ${p.jk?`<div class="row"><b>Jenis Kelamin:</b> ${esc(p.jk)}</div>`:''}${p.status?`<div class="row"><b>Status:</b> ${esc(p.status)}</div>`:''}${p.agama?`<div class="row"><b>Agama:</b> ${esc(p.agama)}</div>`:''}
+ <h3>Contact</h3>
+ ${p.telepon?`<div class="row">📞 ${esc(p.telepon)}</div>`:''}${p.email?`<div class="row">✉️ ${esc(p.email)}</div>`:''}${p.alamat?`<div class="row">📍 ${esc(p.alamat)}</div>`:''}
+ ${has(s.sosmed)?`<h3>Sosial Media</h3>`+filled(s.sosmed).map(x=>`<div class="row">${esc(x.platform)}: ${esc(x.nilai)}</div>`).join(''):''}
+ ${has(s.keahlian)?`<h3>Skill</h3>`+filled(s.keahlian).map(x=>`<div class="sk">${esc(x.nama)}<div class="track"><i style="left:calc(${(x.level||3)/5*100}% - 5px)"></i></div></div>`).join(''):''}
+</div><div class="main">
+ <h1>${esc(p.nama)||'Nama Lengkap'}</h1>${p.judul?`<div class="sub">${esc(p.judul)}</div>`:''}
+ ${p.tentang?`<div class="sec"><h2>Profil</h2><p>${esc(p.tentang)}</p></div>`:''}
+ ${has(s.pendidikan)?`<div class="sec"><h2>Riwayat Pendidikan</h2>${filled(s.pendidikan).map(o=>`<div class="edu"><span>${esc(o.jenjang)}</span><span><b>${esc(o.sekolah)}</b>${o.jurusan?' — '+esc(o.jurusan):''}${o.nilai?' • Nilai: '+esc(o.nilai):''}</span><span>${esc([o.mulai,o.selesai].filter(Boolean).join(' – '))}</span></div>`).join('')}</div>`:''}
+ ${has(s.pengalaman)?`<div class="sec"><h2>Riwayat Pekerjaan / PKL</h2>${filled(s.pengalaman).map(o=>xpBlock(o,'xpr')).join('')}</div>`:''}
+ ${has(s.organisasi)?`<div class="sec"><h2>Pengalaman Organisasi</h2>${filled(s.organisasi).map(o=>xpBlock(o,'xpr')).join('')}</div>`:''}
+ ${has(s.sertifikat)?`<div class="sec"><h2>Sertifikat & Penghargaan</h2><ul>${filled(s.sertifikat).map(x=>`<li>${esc(x.nama)}${x.penerbit?' — '+esc(x.penerbit):''}${x.tahun?' ('+esc(x.tahun)+')':''}</li>`).join('')}</ul></div>`:''}
+</div>`;}
+};
+
+/* ================= PREVIEW, SKOR, SAVE ================= */
+function renderPreview(){
+ const pg=$('#page');pg.className='page '+state.template;pg.innerHTML=TPL[state.template](state);
+ document.querySelectorAll('.tpl-btn').forEach(b=>b.classList.toggle('active',b.dataset.tpl===state.template));
+ fit();score();
+}
+function fit(){
+ const cont=$('#prevScroll'),sc=Math.min(1,(cont.clientWidth-32)/794),box=$('#pageScale'),pg=$('#page');
+ pg.style.transform=`scale(${sc})`;pg.style.transformOrigin='top left';
+ box.style.width=794*sc+'px';box.style.height=pg.offsetHeight*sc+'px';
+}
+function score(){
+ const p=P(),miss=[];
+ const C=[['Nama lengkap terisi',!!p.nama],['Foto profil dipasang',!!p.foto],['Email & telepon terisi',!!p.email&&!!p.telepon],
+ ['Alamat terisi',!!p.alamat],['Ringkasan profil ≥ 100 karakter',(p.tentang||'').trim().length>=100],
+ ['Minimal 1 pendidikan',has(state.pendidikan)&&!!filled(state.pendidikan)[0].sekolah],
+ ['Minimal 1 pengalaman / PKL / organisasi',has(state.pengalaman)||has(state.organisasi)],
+ ['Minimal 3 keahlian terisi',filled(state.keahlian).filter(x=>x.nama).length>=3],
+ ['Minimal 1 sosial media / portofolio',has(state.sosmed)],['Minimal 1 sertifikat / penghargaan',has(state.sertifikat)]];
+ C.forEach(c=>{if(!c[1])miss.push(c[0]);});
+ const pct=Math.round((C.length-miss.length)/C.length*100);
+ $('#scoreBar').style.width=pct+'%';
+ $('#scoreTxt').innerHTML=`<b>${pct}%</b> — ${pct>=80?'✅ CV kuat, siap dikirim!':pct>=50?'👍 Cukup, lengkapi sisa poin berikut':'⚠️ CV belum siap kirim'}`;
+ $('#scoreMiss').innerHTML=miss.map(m=>`<li>${m}</li>`).join('');
+}
+let tq;const queue=()=>{clearTimeout(tq);tq=setTimeout(()=>{renderPreview();try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){alert('Penyimpanan penuh: hapus/hindari foto berukuran besar.');}},250);};
+
+/* ================= EVENT ================= */
+$('#form').addEventListener('input',e=>{
+ const t=e.target;
+ if(t.hasAttribute('data-p')){state.personal[t.dataset.p]=t.value;if(t.dataset.p==='tentang')$('#cntTentang').textContent=t.value.length;}
+ else if(t.hasAttribute('data-k')){state[t.dataset.k][+t.dataset.i][t.dataset.f]=t.value;}else return;
+ queue();
+});
+document.addEventListener('click',e=>{
+ const add=e.target.closest('[data-add]'),del=e.target.closest('[data-del]'),tpl=e.target.closest('[data-tpl]');
+ if(add){state[add.dataset.add].push(E[add.dataset.add]());renderList(add.dataset.add);queue();}
+ if(del){const[k,i]=del.dataset.del.split(':');state[k].splice(+i,1);renderList(k);queue();}
+ if(tpl){state.template=tpl.dataset.tpl;queue();}
+});
+$('#inpFoto').addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f),img=new Image();
+ img.onload=()=>{const m=600,r=Math.min(1,m/Math.max(img.width,img.height)),w=Math.round(img.width*r),h=Math.round(img.height*r);
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);
+  URL.revokeObjectURL(url);state.personal.foto=c.toDataURL('image/jpeg',.85);$('#fotoPrev').src=state.personal.foto;$('#fotoPrev').style.display='block';queue();};
+ img.src=url;
+});
+$('#btnHapusFoto').onclick=()=>{state.personal.foto='';$('#fotoPrev').style.display='none';queue();};
+$('#btnPrint').onclick=()=>window.print();
+$('#btnReset').onclick=()=>{if(confirm('Hapus semua data CV?')){state=defaultState();syncForm();queue();}};
+$('#btnContoh').onclick=()=>{state=contoh();syncForm();queue();};
+$('#btnExport').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='data-cv.json';a.click();};
+$('#inpImport').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=Object.assign(defaultState(),JSON.parse(r.result));syncForm();queue();}catch(err){alert('File JSON tidak valid.');}};r.readAsText(f);});
+window.addEventListener('resize',fit);
+
+function contoh(){return{template:'t1',
+ personal:{foto:'',nama:'Rizky Pratama',judul:'Fresh Graduate SMK — Teknik Komputer & Jaringan',tempat:'Bandung',tanggal:'2008-06-12',jk:'Laki-laki',status:'Belum menikah',agama:'Islam',wni:'Indonesia',alamat:'Jl. Melati No. 12, Kec. Coblong, Kota Bandung 40132',telepon:'+62 812-3456-7890',email:'rizky.pratama@email.com',tentang:'Lulusan baru SMK Negeri 1 Bandung jurusan Teknik Komputer & Jaringan dengan pengalaman PKL satu tahun di PT Telkom Indonesia. Menguasai instalasi jaringan LAN/WAN, konfigurasi Mikrotik, serta perawatan perangkat komputer. Terbiasa bekerja dalam tim, disiplin, dan cepat belajar, siap berkontribusi sebagai teknisi jaringan junior.'},
+ sosmed:[{platform:'Instagram',nilai:'@rizky.pratama'},{platform:'LinkedIn',nilai:'linkedin.com/in/rizkypratama'}],
+ pendidikan:[{jenjang:'SMK',sekolah:'SMK Negeri 1 Bandung',jurusan:'Teknik Komputer & Jaringan',mulai:'2023',selesai:'2026',nilai:'Rata-rata rapor 88'},{jenjang:'SMP',sekolah:'SMP Negeri 4 Bandung',jurusan:'',mulai:'2020',selesai:'2023',nilai:''}],
+ pengalaman:[{posisi:'Teknisi Jaringan (PKL)',perusahaan:'PT Telkom Indonesia',periode:'2025 – 2026',deskripsi:'Melakukan instalasi & konfigurasi 30+ titik jaringan LAN di gedung kantor.\nMemperbaiki 15 unit perangkat jaringan dan komputer klien per minggu.\nMendokumentasikan topologi jaringan beserta laporan pemeliharaan harian.'},
+ {posisi:'Freelance Teknisi & Desainer',perusahaan:'Proyek Mandiri',periode:'2024 – Sekarang',deskripsi:'Menangani 10+ proyek instalasi jaringan rumah & UMKM.\nMendesain 20+ materi promosi digital untuk klien kecil.'}],
+ organisasi:[{posisi:'Ketua Bidang Media & Dokumentasi',nama:'OSIS SMK Negeri 1 Bandung',periode:'2024 – 2025',deskripsi:'Mengelola 4 akun media sosial sekolah dengan kenaikan pengikut 35%.\nMemimpin tim beranggotakan 8 siswa untuk liputan 12 acara sekolah.'}],
+ keahlian:[{nama:'Mikrotik RouterOS',level:4},{nama:'Instalasi LAN / WAN',level:5},{nama:'Adobe Photoshop',level:3},{nama:'Microsoft Office',level:4},{nama:'Public Speaking',level:3}],
+ sertifikat:[{nama:'Sertifikasi Kompetensi Junior Network Administrator',penerbit:'BNSP',tahun:'2026'},{nama:'Juara 2 LKS Jaringan Komputer Tingkat Kota',penerbit:'Dinas Pendidikan Kota Bandung',tahun:'2025'}]};}
+
+/* init */
+syncForm();renderPreview();
+</script>
 </body>
 </html>
